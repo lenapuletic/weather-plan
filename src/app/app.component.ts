@@ -1,12 +1,23 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { CitySearchComponent } from './components/city-search/city-search.component';
+import { WeatherDashboardComponent } from './components/weather-dashboard/weather-dashboard.component';
+import { ActivitySuggestionsComponent } from './components/activity-suggestions/activity-suggestions.component';
+import { SavedLocationsComponent } from './components/saved-locations/saved-locations.component';
+import { ForecastComponent } from './components/forecast/forecast.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    CitySearchComponent,
+    WeatherDashboardComponent,
+    ActivitySuggestionsComponent,
+    SavedLocationsComponent,
+    ForecastComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'weather-plan';
 }
