@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { CitySearchComponent } from './components/city-search/city-search.component';
 import { WeatherDashboardComponent } from './components/weather-dashboard/weather-dashboard.component';
 import { ActivitySuggestionsComponent } from './components/activity-suggestions/activity-suggestions.component';
@@ -9,7 +8,6 @@ import { ForecastComponent } from './components/forecast/forecast.component';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
     CitySearchComponent,
     WeatherDashboardComponent,
     ActivitySuggestionsComponent,
