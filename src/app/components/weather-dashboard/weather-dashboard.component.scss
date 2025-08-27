@@ -1,0 +1,98 @@
+:host {
+    display: block;
+}
+
+.card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    color: #334155;
+    transition: all 0.3s ease-in-out;
+}
+
+.loading, .error, .placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    font-size: 1.1rem;
+    color: #64748b;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.date {
+    color: #64748b;
+}
+
+.temp-main {
+    text-align: right;
+    display: grid;
+    grid-template-areas:
+      "icon temp"
+      "icon desc";
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 0 0.5rem;
+}
+
+.weather-icon {
+    grid-area: icon;
+    width: 60px;
+    height: 60px;
+}
+
+.temperature {
+    grid-area: temp;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1;
+}
+  
+.description {
+    grid-area: desc;
+    color: #64748b;
+    text-transform: capitalize;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+}
+  
+.detail-item {
+    background-color: #f8fafc;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    text-align: center;
+}
+  
+.label {
+    display: block;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+}
+  
+.value {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #334155;
+}
