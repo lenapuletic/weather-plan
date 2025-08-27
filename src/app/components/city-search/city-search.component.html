@@ -7,11 +7,14 @@
         matInput 
         [formControl]="searchControl" 
         [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSearch()">
-        @for (city of filteredCities; track city) {
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
+        @for (city of filteredCities$ | async; track city) {
             <mat-option [value]="city">
-                {{ city }}
-              </mat-option>
+                {{ city.name }}, {{ city.country }}
+                @if (city.state) {
+                    <span>({{ city.state }})</span>
+                }
+            </mat-option>
         }
       </mat-autocomplete>
     </mat-form-field>

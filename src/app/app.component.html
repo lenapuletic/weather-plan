@@ -2,7 +2,7 @@
   <header class="header">
     <h1 class="title">WeatherPlan</h1>
     <!-- ToDo: add 'i' icon -->
-    <app-city-search></app-city-search>
+    <app-city-search (search)="onCitySearch($event)"></app-city-search>
   </header>
 
   <main class="main-content">
