@@ -1,1 +1,17 @@
-<p>forecast works!</p>
+@if(store.forecast()) {
+    <div class="card">
+        <h3>5-Day Forecast</h3>
+        <div class="forecast-grid">
+            @for(day of dailyForecast(); track day) {
+                <div class="day-card">
+                    <p class="day-name">{{ day.dt_txt | date:'EEE' }}</p>
+                    <img [src]="getIconUrl(day.weather[0].icon)" alt="Weather icon">
+                    <p class="temp">
+                      <span class="temp-high">{{ day.main.temp_max | number:'1.0-0' }}°</span>
+                      <span class="temp-low">{{ day.main.temp_min | number:'1.0-0' }}°</span>
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+}

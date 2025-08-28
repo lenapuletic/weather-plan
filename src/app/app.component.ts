@@ -23,5 +23,6 @@ export class AppComponent {
 
   onCitySearch(city: string) {
     this.store.loadCurrentWeather(city);
+    this.store.loadForecast(city);
   }
 }

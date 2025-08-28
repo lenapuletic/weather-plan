@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
-import { GeolocationData } from '../interface/weather.interface';
+import { ForecastData, GeolocationData } from '../interface/weather.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class WeatherService {
     const options = {
       params: new HttpParams()
         .set('q', query)
-        .set('limit', 5) // We only need the top 5 suggestions
+        .set('limit', 5)
         .set('appid', environment.openWeather.key)
     };
 
@@ -22,16 +22,27 @@ export class WeatherService {
     return this.http.get<GeolocationData[]>(url, options);
   }
   
-  // This method will fetch the current weather for a given city
   getCurrentWeather(city: string) {
     const options = {
       params: new HttpParams()
         .set('q', city)
         .set('appid', environment.openWeather.key)
-        .set('units', 'metric') // To get temperature in Celsius
+        .set('units', 'metric')
     };
     
     const url = `${environment.openWeather.url}/weather`;
     return this.http.get(url, options);
+  }
+
+  getForecast(city: string): Observable<ForecastData> {
+    const options = {
+      params: new HttpParams()
+        .set('q', city)
+        .set('appid', environment.openWeather.key)
+        .set('units', 'metric')
+    };
+  
+    const url = `${environment.openWeather.url}/forecast`;
+    return this.http.get<ForecastData>(url, options);
   }
 }

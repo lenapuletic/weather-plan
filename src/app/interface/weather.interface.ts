@@ -18,3 +18,18 @@ export interface GeolocationData {
     country: string;
     state?: string;
 }
+
+export interface ForecastData {
+    list: {
+      dt_txt: string;
+      main: {
+        temp: number;
+        temp_min: number;
+        temp_max: number;
+      };
+      weather: {
+        icon: string;
+        description: string;
+      }[];
+    }[];
+}

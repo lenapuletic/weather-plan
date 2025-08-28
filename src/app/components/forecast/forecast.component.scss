@@ -1,0 +1,55 @@
+:host {
+    display: block;
+}
+ 
+h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 1rem 0;
+}
+  
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+}
+  
+.day-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1rem;
+    text-align: center;
+}
+  
+.day-name {
+    font-weight: 500;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+}
+  
+img {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+}
+  
+.temp {
+    font-size: 1.1rem;
+}
+  
+.temp-high {
+    font-weight: 500;
+    color: #334155;
+}
+  
+.temp-low {
+    color: #94a3b8;
+    margin-left: 0.5rem;
+}
+  
+@media (max-width: 600px) {
+    .forecast-grid {
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+}

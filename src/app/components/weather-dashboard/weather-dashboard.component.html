@@ -16,23 +16,22 @@
             <h2>{{ weather.name }}</h2>
             <p class="date">Today, {{ '2025-08-27' | date:'longDate' }}</p>
           </div>
+          <div class="details">
+            <div class="detail-item">
+              <span class="label">Humidity</span>
+              <span class="value">{{ weather.main.humidity }}%</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Wind</span>
+              <span class="value">{{ weather.wind.speed | number:'1.1-1' }} m/s</span>
+            </div>
+          </div>
           <div class="temp-main">
             @if (weatherIconUrl()) {
                 <img [src]="weatherIconUrl()" alt="Weather icon" class="weather-icon">
             }
             <p class="temperature">{{ weather.main.temp | number:'1.0-0' }}°</p>
             <p class="description">{{ weather.weather[0].description }}</p>
-          </div>
-        </div>
-      
-        <div class="details">
-          <div class="detail-item">
-            <span class="label">Humidity</span>
-            <span class="value">{{ weather.main.humidity }}%</span>
-          </div>
-          <div class="detail-item">
-            <span class="label">Wind</span>
-            <span class="value">{{ weather.wind.speed | number:'1.1-1' }} m/s</span>
           </div>
         </div>
     </div>
