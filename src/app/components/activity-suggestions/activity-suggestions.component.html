@@ -1,1 +1,15 @@
-<p>activity-suggestions works!</p>
+@let weather = store.currentWeather();
+
+@if(weather && suggestedActivities().length > 0) {
+    <div class="card">
+        <h3>Perfect weather for</h3>
+        <div class="activities-grid">
+            @for(activity of suggestedActivities(); track activity) {
+                <div class="activity-card">
+                    <h4>{{ activity.name }}</h4>
+                    <p>{{ activity.description }}</p>
+                </div>
+            }
+        </div>
+    </div>
+}
