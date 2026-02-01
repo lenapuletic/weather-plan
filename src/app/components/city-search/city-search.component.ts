@@ -3,7 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { debounceTime, distinctUntilChanged, filter, Observable, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, filter, Observable, of, switchMap } from 'rxjs';
 import { GeolocationData } from '../../interface/weather.interface';
 import { WeatherService } from '../../services/weather.service';
 import { AsyncPipe } from '@angular/common';
@@ -21,7 +21,7 @@ import { AsyncPipe } from '@angular/common';
   styleUrl: './city-search.component.scss'
 })
 export class CitySearchComponent {
-  @Output() search = new EventEmitter<string>();
+  @Output() search = new EventEmitter<GeolocationData>();
 
   private weatherService = inject(WeatherService);
 
@@ -30,16 +30,25 @@ export class CitySearchComponent {
 
   constructor() {
     this.filteredCities$ = this.searchControl.valueChanges.pipe(
-      switchMap(value => this.weatherService.getCitySuggestions(value!))
+      debounceTime(300),
+      distinctUntilChanged(),
+      filter(value => !!value),
+      switchMap(value => 
+        this.weatherService.getCitySuggestions(value!).pipe(
+          catchError(err => {
+            console.error('Search Error:', err);
+            return of([]);
+          })
+        )
+      )
     );
   }
-
-  displayFn(city: GeolocationData): string {
-    return city && city.name ? `${city.name}, ${city.country}` : '';
-  }
-
+  
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
     const city: GeolocationData = event.option.value;
-    this.search.emit(city.name);
+    this.search.emit(city); 
+  }
+  displayFn(city: GeolocationData): string {
+    return city && city.name ? `${city.name}, ${city.country}` : '';
   }
 }

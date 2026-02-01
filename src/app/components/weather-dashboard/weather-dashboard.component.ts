@@ -29,6 +29,8 @@ export class WeatherDashboardComponent {
       const locationToSave: GeolocationData = {
         name: weather.name,
         country: weather.sys.country ?? 'N/A',
+        lat: weather.coord.lat,
+        lon: weather.coord.lon
       };
       this.store.addLocation(locationToSave);
     }

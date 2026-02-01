@@ -1,17 +1,9 @@
 import { patchState, signalStore, withState, withMethods, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ForecastData, GeolocationData, WeatherData } from '../interface/weather.interface';
-import { inject } from '@angular/core';
+import { effect, inject } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { pipe, switchMap, tap } from 'rxjs';
-
-const getInitialSavedLocations = (): GeolocationData[] => {
-    if (typeof window !== 'undefined') {
-      const saved = window.localStorage.getItem('savedLocations');
-      return saved ? JSON.parse(saved) : [];
-    }
-    return [];
-};
 
 export interface WeatherState {
   currentWeather: WeatherData | null;
@@ -36,26 +28,26 @@ export const WeatherStore = signalStore(
         store,
         weatherService = inject(WeatherService)
     ) => ({
-      loadCurrentWeather: rxMethod<string>(
+      loadCurrentWeather: rxMethod<GeolocationData>(
         pipe(
           tap(() => patchState(store, { isLoading: true, error: null })),
-          switchMap((city) =>
-            weatherService.getCurrentWeather(city).pipe(
+          switchMap((city) => 
+            weatherService.getCurrentWeather(city.name, city.country, city.lat, city.lon).pipe(
               tap({
-                next: (data) => patchState(store, { currentWeather: data as WeatherData, isLoading: false }),
+                next: (data) => patchState(store, { currentWeather: data, isLoading: false }),
                 error: (err) => {
                   console.error('API Error:', err);
-                  patchState(store, { error: 'City not found', isLoading: false })
-                },
+                  patchState(store, { error: 'City not found', isLoading: false });
+                }
               })
             )
           )
         )
       ),
-      loadForecast: rxMethod<string>(
+      loadForecast: rxMethod<GeolocationData>(
         pipe(
           switchMap((city) =>
-            weatherService.getForecast(city).pipe(
+            weatherService.getForecast(city.name, city.country, city.lat, city.lon).pipe(
               tap({
                 next: (data) => patchState(store, { forecast: data }),
                 error: (err) => console.error('Forecast API Error:', err),
@@ -65,20 +57,29 @@ export const WeatherStore = signalStore(
         )
       ),
       addLocation(location: GeolocationData) {
-        const updatedLocations = [...store.savedLocations(), location];
-        patchState(store, { savedLocations: updatedLocations });
-        localStorage.setItem('savedLocations', JSON.stringify(updatedLocations));
+        const updated = [...store.savedLocations(), location];
+        patchState(store, { savedLocations: updated });
       },
+  
       removeLocation(location: GeolocationData) {
-        const updatedLocations = store.savedLocations().filter(l => l.name !== location.name && l.country !== location.country);
-        patchState(store, { savedLocations: updatedLocations });
-        localStorage.setItem('savedLocations', JSON.stringify(updatedLocations));
-      },
+        const updated = store.savedLocations().filter(l => 
+          l.name !== location.name || l.country !== location.country
+        );
+        patchState(store, { savedLocations: updated });
+      }
     })
   ),
   withHooks({
     onInit(store) {
-      patchState(store, { savedLocations: getInitialSavedLocations() });
-    },
+      const saved = localStorage.getItem('savedLocations');
+      if (saved) {
+        patchState(store, { savedLocations: JSON.parse(saved) });
+      }
+
+      effect(() => {
+        const locations = store.savedLocations();
+        localStorage.setItem('savedLocations', JSON.stringify(locations));
+      });
+    }
   })
 );

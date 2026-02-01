@@ -12,12 +12,12 @@ export class SavedLocationsComponent {
   readonly store = inject(WeatherStore);
 
   onLocationSelect(location: GeolocationData) {
-    this.store.loadCurrentWeather(location.name);
-    this.store.loadForecast(location.name);
+    this.store.loadCurrentWeather(location);
+    this.store.loadForecast(location);
   }
 
   onRemoveLocation(event: MouseEvent, location: GeolocationData) {
-    event.stopPropagation(); // Prevent the location from being selected
+    event.stopPropagation();
     this.store.removeLocation(location);
   }
 }

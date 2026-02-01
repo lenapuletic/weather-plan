@@ -14,6 +14,10 @@ export interface WeatherData {
     sys: {
         country: string;
         id: number;
+    };
+    coord: {
+      lon: number,
+      lat: number
     }
 }
 
@@ -21,6 +25,8 @@ export interface GeolocationData {
     name: string;
     country: string;
     state?: string;
+    lat: number;
+    lon: number;
 }
 
 export interface ForecastData {
