@@ -29,6 +29,9 @@ export class AppComponent {
   
   @ViewChild('menuBtn') menuBtn?: ElementRef;
 
+  readonly currentWeather = this.store.currentWeather;
+  readonly isLoading = this.store.isLoading;
+  readonly error = this.store.error;
   showSavedLocations = false;
 
   @HostListener('document:click', ['$event'])

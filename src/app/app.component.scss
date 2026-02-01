@@ -1,14 +1,15 @@
 :host {
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem 2rem;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  padding: 3rem 8rem;
   min-height: 100%;
 }
   
 .container {
   width: 100%;
-  max-width: 1200px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -34,7 +35,7 @@
   
 .main-content {
   display: flex;
-  //grid-template-columns: 2fr 1fr;
+  justify-content: center;
   gap: 2rem;
   width: 100%;
 }
@@ -42,7 +43,6 @@
 .weather-info {
   flex: 1;
   display: flex;
-  flex-direction: column;
   gap: 1rem;
 }
 
@@ -66,8 +66,25 @@
     background-color: #eff1fa;
   }
 }
+
+.no-location {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  text-align: center;
+  color: #334155;
   
-/* Responsive layout for smaller screens */
+  p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    color: #64748b;
+    max-width: 400px;
+    line-height: 1.5;
+  }
+}
+  
 @media (max-width: 900px) {
   .main-content {
     grid-template-columns: 1fr;

@@ -1,25 +1,30 @@
+<header class="header">
+  <h1 class="title">WeatherPlan</h1>
+  <!-- ToDo: add 'i' icon -->
+  <div class="header__actions">
+    <app-city-search (search)="onCitySearch($event)"></app-city-search>
+    <button mat-icon-button #menuBtn class="save-btn" (click)="toggleSavedLocations($event)"><mat-icon>bookmark</mat-icon></button>
+  </div>
+</header>
 <div class="container">
-  <header class="header">
-    <h1 class="title">WeatherPlan</h1>
-    <!-- ToDo: add 'i' icon -->
-    <div class="header__actions">
-      <app-city-search (search)="onCitySearch($event)"></app-city-search>
-      <button mat-icon-button #menuBtn class="save-btn" (click)="toggleSavedLocations($event)"><mat-icon>bookmark</mat-icon></button>
-    </div>
-  </header>
-
   <main class="main-content">
-    <div class="weather-info">
-      <app-weather-dashboard></app-weather-dashboard>
-      <app-activity-suggestions></app-activity-suggestions>
-    </div>
+    @if(!currentWeather() && !isLoading() && !error()) {
+      <div class="no-location">
+          <p>Search for a city to see the weather or chose one of previously saved locations...</p>
+      </div>
+    }
+    @else {
+      <div class="weather-info">
+        <app-weather-dashboard></app-weather-dashboard>
+        <app-activity-suggestions></app-activity-suggestions>
+      </div>
+    }
     @if(showSavedLocations) {
       <aside #sidebar class="sidebar">
         <app-saved-locations ></app-saved-locations>
       </aside>
     }
   </main>
-
   <footer class="forecast-section">
     <app-forecast></app-forecast>
   </footer>

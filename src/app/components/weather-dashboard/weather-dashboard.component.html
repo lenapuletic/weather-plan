@@ -10,39 +10,36 @@
 }
 @let weather = currentWeather();
 @if(weather) {
-    <div class="card">
-        <div class="header">
-            <!-- TODO: Remove inline styling -->
-          <div style="display: flex; gap:20px;">
-            <button mat-icon-button class="save-btn" (click)="onSaveLocation()"><mat-icon>favorite_border</mat-icon>
-            </button>
-            <div>
-              <h2>{{ weather.name }}</h2>
-              <p class="date">Today, {{ '2025-08-27' | date:'longDate' }}</p>
-            </div>
-          </div>
-          <div class="details">
-            <div class="detail-item">
-              <span class="label">Humidity</span>
-              <span class="value">{{ weather.main.humidity }}%</span>
-            </div>
-            <div class="detail-item">
-              <span class="label">Wind</span>
-              <span class="value">{{ weather.wind.speed | number:'1.1-1' }} m/s</span>
-            </div>
-          </div>
-          <div class="temp-main">
-            @if (weatherIconUrl()) {
-                <img [src]="weatherIconUrl()" alt="Weather icon" class="weather-icon">
-            }
-            <p class="temperature">{{ weather.main.temp | number:'1.0-0' }}°</p>
-            <p class="description">{{ weather.weather[0].description }}</p>
-          </div>
-        </div>
+  <div class="card main-weather-card"> <div class="header">
+    <div class="location-group">
+      <button mat-icon-button class="save-btn" (click)="onSaveLocation()">
+        <mat-icon>favorite_border</mat-icon>
+      </button>
+      <div class="location-info">
+        <h2>
+           {{ weather.name }}
+        </h2>
+        <!-- ToDo: add current date -->
+        <p class="date">Today, {{ '2026-02-01' | date:'longDate' }}</p>
+      </div>
     </div>
-}
-@if(!currentWeather() && !isLoading() && !error()) {
-    <div class="no-location">
-        <p>Search for a city to see the weather or chose one of previously saved locations...</p>
+  </div>
+  <div class="details">
+    <div class="detail-item">
+      <span class="label">Humidity</span>
+      <span class="value">{{ weather.main.humidity }}%</span>
     </div>
+    <div class="detail-item">
+      <span class="label">Wind</span>
+      <span class="value">{{ weather.wind.speed | number:'1.1-1' }} m/s</span>
+    </div>
+  </div>
+  <div class="temp-main">
+    @if (weatherIconUrl()) {
+      <img [src]="weatherIconUrl()" alt="Weather icon" class="weather-icon">
+    }
+    <p class="temperature">{{ weather.main.temp | number:'1.0-0' }}°</p>
+    <p class="description">{{ weather.weather[0].description }}</p>
+  </div>
+</div>
 }
