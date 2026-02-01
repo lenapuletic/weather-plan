@@ -12,9 +12,14 @@
 @if(weather) {
     <div class="card">
         <div class="header">
-          <div>
-            <h2>{{ weather.name }}</h2>
-            <p class="date">Today, {{ '2025-08-27' | date:'longDate' }}</p>
+            <!-- TODO: Remove inline styling -->
+          <div style="display: flex; gap:20px;">
+            <button mat-icon-button class="save-btn" (click)="onSaveLocation()"><mat-icon>favorite_border</mat-icon>
+            </button>
+            <div>
+              <h2>{{ weather.name }}</h2>
+              <p class="date">Today, {{ '2025-08-27' | date:'longDate' }}</p>
+            </div>
           </div>
           <div class="details">
             <div class="detail-item">
@@ -37,7 +42,7 @@
     </div>
 }
 @if(!currentWeather() && !isLoading() && !error()) {
-    <div class="card placeholder">
-        <p>Search for a city to see the weather</p>
+    <div class="no-location">
+        <p>Search for a city to see the weather or chose one of previously saved locations...</p>
     </div>
 }

@@ -11,6 +11,10 @@ export interface WeatherData {
       description: string;
       icon: string;
     }[];
+    sys: {
+        country: string;
+        id: number;
+    }
 }
 
 export interface GeolocationData {

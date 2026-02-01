@@ -92,3 +92,23 @@ h2 {
     font-weight: 500;
     color: #334155;
 }
+
+.save-btn {
+    background: none;
+    border: none;
+    //font-size: 1.5rem;
+    cursor: pointer;
+    //border-radius: 50%;
+    //transition: background-color 0.2s;
+    // &:hover {
+    //   //background-color: #f1f5f9;
+    // }
+}
+
+.no-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    color: #334155;
+}

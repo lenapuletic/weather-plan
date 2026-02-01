@@ -1,0 +1,46 @@
+.card {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.locations-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: #f1f5f9;
+    }
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #94a3b8;
+    cursor: pointer;
+    &:hover {
+      color: #ef4444;
+    }
+}

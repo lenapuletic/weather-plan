@@ -1,22 +1,32 @@
-import { patchState, signalStore, withState, withMethods } from '@ngrx/signals';
+import { patchState, signalStore, withState, withMethods, withHooks } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { ForecastData, WeatherData } from '../interface/weather.interface';
+import { ForecastData, GeolocationData, WeatherData } from '../interface/weather.interface';
 import { inject } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
 import { pipe, switchMap, tap } from 'rxjs';
+
+const getInitialSavedLocations = (): GeolocationData[] => {
+    if (typeof window !== 'undefined') {
+      const saved = window.localStorage.getItem('savedLocations');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+};
 
 export interface WeatherState {
   currentWeather: WeatherData | null;
   isLoading: boolean;
   error: string | null;
   forecast: ForecastData | null;
+  savedLocations: GeolocationData[];
 }
 
 const initialState: WeatherState = {
   currentWeather: null,
   isLoading: false,
   error: null,
-  forecast: null
+  forecast: null,
+  savedLocations: [],
 };
 
 export const WeatherStore = signalStore(
@@ -54,6 +64,21 @@ export const WeatherStore = signalStore(
           )
         )
       ),
+      addLocation(location: GeolocationData) {
+        const updatedLocations = [...store.savedLocations(), location];
+        patchState(store, { savedLocations: updatedLocations });
+        localStorage.setItem('savedLocations', JSON.stringify(updatedLocations));
+      },
+      removeLocation(location: GeolocationData) {
+        const updatedLocations = store.savedLocations().filter(l => l.name !== location.name && l.country !== location.country);
+        patchState(store, { savedLocations: updatedLocations });
+        localStorage.setItem('savedLocations', JSON.stringify(updatedLocations));
+      },
     })
-  )
+  ),
+  withHooks({
+    onInit(store) {
+      patchState(store, { savedLocations: getInitialSavedLocations() });
+    },
+  })
 );
