@@ -1,13 +1,11 @@
-@let weather = store.currentWeather();
-
-@if(weather && suggestedActivities().length > 0) {
+@if (store.currentWeather()) {
     <div class="card">
-        <h3>Perfect weather for</h3>
+        <h3 class="section-label">Perfect weather for</h3>
         <div class="activities-grid">
-            @for(activity of suggestedActivities(); track activity) {
+            @for(activity of suggestedActivities(); track activity.title) {
                 <div class="activity-card">
-                    <h4>{{ activity.name }}</h4>
-                    <p>{{ activity.description }}</p>
+                    <mat-icon>{{activity.icon}}</mat-icon>
+                    <span>{{ activity.title }}</span>
                 </div>
             }
         </div>

@@ -8,6 +8,7 @@ export interface WeatherData {
       speed: number;
     };
     weather: {
+      main: string;
       description: string;
       icon: string;
     }[];
