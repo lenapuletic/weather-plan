@@ -26,6 +26,16 @@
     gap: 20px;
   }
 }
+
+.title-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  
+  &:hover .title {
+    opacity: 0.8;
+  }
+}
   
 .title {
   font-size: 1.75rem;
