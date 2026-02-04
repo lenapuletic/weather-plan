@@ -1,59 +1,64 @@
-# WeatherPlan
+# WeatherPlan 🌦️
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.14.
+![Angular](https://img.shields.io/badge/Angular-19-dd0031?style=flat&logo=angular)
+![SignalStore](https://img.shields.io/badge/NgRx-SignalStore-purple?style=flat&logo=ngrx)
+![RxJS](https://img.shields.io/badge/RxJS-Stream%20Management-B7178C?style=flat&logo=reactivex)
+![Status](https://img.shields.io/badge/Status-Desktop%20First-blue)
 
-## Development server
+A reactive weather dashboard built with **Angular 19**, designed to demonstrate modern state management patterns using a hybrid of **Signals** and **RxJS**.
 
-To start a local development server, run:
+The application goes beyond basic API calls by implementing robust error handling, local state persistence, and intelligent data transformation to provide activity suggestions based on real-time weather conditions.
 
-```bash
-ng serve
-```
+![Application Screenshot](placeholder-image-url.png)
+## 🚀 Key Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+* **Smart Search:** Real-time city search with debouncing and autocomplete.
+* **Reactive Dashboard:** Displays current weather, 5-day forecast, and environmental details (humidity, pressure, wind).
+* **Activity Engine:** Suggests real-world activities (e.g., "Perfect for visiting a museum") based on temperature and weather codes.
+* **Local Persistence:** Users can "bookmark" locations, which are saved to LocalStorage and persist between sessions.
+* **Desktop-First UI:** A spacious interface optimized for desktop workflows.
 
-## Code scaffolding
+## 🛠️ Technical Highlights
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This project focuses on architectural best practices for modern Angular applications:
 
-```bash
-ng generate component component-name
-```
+* **SignalStore Architecture:** leveraged `signalStore` with custom features (`withMethods`, `withHooks`) to manage global state (loading, error, data) in a clean, reactive way without the boilerplate of Redux.
+* **Signals & RxJS Interop:** Uses **Signals** for synchronous UI rendering while leveraging **RxJS** for complex asynchronous event streams (search input handling).
+* **Stream Safety:** Implements the `catchError` operator inside `switchMap` to prevent "Stream Death," ensuring the search observable stays alive even after API failures (404s).
+* **Performance:**
+    * **Debouncing:** Rate-limits API requests to prevent flooding the server.
+    * **OnPush Strategy:** Optimized change detection cycles.
+    * **TrackBy Optimization:** Uses unique keys (`$index` and `date` strings) in `@for` loops to minimize DOM re-rendering.
+* **Error Handling:** Graceful UI recovery for network errors or invalid cities, preventing the application from crashing.
+## 📱 Mobile Support Note
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+This application follows a **Desktop-First** design strategy.
+To ensure quality, a responsive overlay has been implemented for screens smaller than 900px, politely directing users to a desktop device for the optimal experience.
 
-```bash
-ng generate --help
-```
+## 🏃‍♂️ Getting Started
 
-## Building
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/YOUR_USERNAME/weather-plan.git](https://github.com/YOUR_USERNAME/weather-plan.git)
+    cd weather-plan
+    ```
 
-To build the project run:
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-```bash
-ng build
-```
+3.  **Run the application**
+    ```bash
+    ng serve
+    ```
+    Navigate to `http://localhost:4200/`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🔮 Future Improvements
 
-## Running unit tests
+* Full mobile responsiveness adaptation.
+* Unit testing with Jest.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+_Built with ❤️ by Lena Puletic
