@@ -36,7 +36,6 @@ export class CitySearchComponent {
       switchMap(value => 
         this.weatherService.getCitySuggestions(value!).pipe(
           catchError(err => {
-            console.error('Search Error:', err);
             return of([]);
           })
         )

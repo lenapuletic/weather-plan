@@ -3,7 +3,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { ForecastData, GeolocationData, WeatherData } from '../interface/weather.interface';
 import { effect, inject } from '@angular/core';
 import { WeatherService } from '../services/weather.service';
-import { pipe, switchMap, tap } from 'rxjs';
+import { catchError, EMPTY, pipe, switchMap, tap } from 'rxjs';
 
 export interface WeatherState {
   currentWeather: WeatherData | null;
@@ -33,12 +33,13 @@ export const WeatherStore = signalStore(
           tap(() => patchState(store, { isLoading: true, error: null })),
           switchMap((city) => 
             weatherService.getCurrentWeather(city.name, city.country, city.lat, city.lon).pipe(
-              tap({
-                next: (data) => patchState(store, { currentWeather: data, isLoading: false }),
-                error: (err) => {
-                  console.error('API Error:', err);
-                  patchState(store, { error: 'City not found', isLoading: false });
-                }
+              tap((data) => patchState(store, { currentWeather: data, isLoading: false })),
+              catchError((err) => {
+                patchState(store, { 
+                  error: 'City not found', 
+                  isLoading: false 
+                });
+                return EMPTY;
               })
             )
           )
@@ -48,9 +49,9 @@ export const WeatherStore = signalStore(
         pipe(
           switchMap((city) =>
             weatherService.getForecast(city.name, city.country, city.lat, city.lon).pipe(
-              tap({
-                next: (data) => patchState(store, { forecast: data }),
-                error: (err) => console.error('Forecast API Error:', err),
+              tap((data) => patchState(store, { forecast: data })),
+              catchError((err) => {
+                return EMPTY; 
               })
             )
           )

@@ -37,7 +37,6 @@ export class WeatherDashboardComponent {
     event.stopPropagation();
     const weather = this.currentWeather();
     if (weather) {
-      console.log(weather)
       const selectedLocation: GeolocationData = {
         name: weather.name,
         country: weather.sys.country ?? 'N/A',
