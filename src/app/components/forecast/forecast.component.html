@@ -2,7 +2,7 @@
     <div class="card">
         <h3>5-Day Forecast</h3>
         <div class="forecast-grid">
-            @for(day of dailyForecast(); track day) {
+            @for(day of dailyForecast(); track day.dt_txt) {
                 <div class="day-card">
                     <p class="day-name">{{ day.dt_txt | date:'EEE' }}</p>
                     <img [src]="getIconUrl(day.weather[0].icon)" alt="Weather icon">

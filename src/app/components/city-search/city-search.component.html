@@ -8,8 +8,7 @@
         [formControl]="searchControl" 
         [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-        <!-- ToDo: check track -->
-        @for(city of filteredCities$ | async; track city.name) {
+        @for(city of filteredCities$ | async; track $index) {
             <mat-option [value]="city">
                 {{ city.name }}, {{ city.country }}
                 @if(city.state) {
