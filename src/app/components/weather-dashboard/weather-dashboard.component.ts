@@ -14,8 +14,6 @@ export class WeatherDashboardComponent {
   readonly store = inject(WeatherStore);
 
   readonly currentWeather = this.store.currentWeather;
-  readonly isLoading = this.store.isLoading;
-  readonly error = this.store.error;
 
   readonly weatherIconUrl = computed(() => {
     const iconCode = this.currentWeather()?.weather[0]?.icon;

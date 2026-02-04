@@ -15,21 +15,31 @@
     </div>
   </div>
 </header>
-<div class="container">
-  <main class="main-content">
-    @if(!currentWeather() && !isLoading() && !error()) {
-      <div class="no-location">
-          <p>Search for a city to see the weather or chose one of previously saved locations...</p>
-      </div>
-    }
-    @else {
+@if(!currentWeather() && !isLoading() && !error()) {
+  <div class="no-location">
+      <p>Search for a city to see the weather or chose one of previously saved locations...</p>
+  </div>
+}
+@else if (isLoading()) {
+  <div class="card loading">
+    <p>Loading weather data...</p>
+</div>
+}
+@else if (error()) {
+  <div class="card error">
+    <p>{{ error() }}</p>
+</div>
+}
+@else {
+  <div class="container">
+    <main class="main-content">
       <div class="weather-info">
         <app-weather-dashboard></app-weather-dashboard>
         <app-activity-suggestions></app-activity-suggestions>
       </div>
-    }
-  </main>
-  <footer class="forecast-section">
-    <app-forecast></app-forecast>
-  </footer>
-</div>
+    </main>
+    <footer class="forecast-section">
+      <app-forecast></app-forecast>
+    </footer>
+  </div>
+}

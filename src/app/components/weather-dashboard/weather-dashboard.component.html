@@ -1,13 +1,3 @@
-@if(isLoading()) {
-    <div class="card loading">
-        <p>Loading weather data...</p>
-    </div>
-}
-@if(error()) {
-    <div class="card error">
-        <p>{{ error() }}</p>
-    </div>
-}
 @let weather = currentWeather();
 @if(weather) {
   <div class="card main-weather-card"> <div class="header">

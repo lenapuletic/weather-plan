@@ -36,7 +36,7 @@ export const WeatherStore = signalStore(
               tap((data) => patchState(store, { currentWeather: data, isLoading: false })),
               catchError((err) => {
                 patchState(store, { 
-                  error: 'City not found', 
+                  error: `It seems that we don't have any data for this city. Please search for another one.`, 
                   isLoading: false 
                 });
                 return EMPTY;
