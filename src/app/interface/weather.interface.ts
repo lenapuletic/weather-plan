@@ -3,6 +3,8 @@ export interface WeatherData {
     main: {
       temp: number;
       humidity: number;
+      feels_like: number;
+      pressure: number;
     };
     wind: {
       speed: number;

@@ -25,6 +25,14 @@
       <span class="label">Wind</span>
       <span class="value">{{ weather.wind.speed | number:'1.1-1' }} m/s</span>
     </div>
+    <div class="detail-item">
+      <span class="label">Pressure</span>
+      <span class="value">{{ weather.main.pressure }} hPa</span>
+    </div>
+    <div class="detail-item">
+      <span class="label">Feels Like</span>
+      <span class="value">{{ weather.main.feels_like | number:'1.0-0' }}°</span>
+    </div>
   </div>
   <div class="temp-main">
     @if (weatherIconUrl()) {
