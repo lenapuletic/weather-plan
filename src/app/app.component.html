@@ -1,9 +1,18 @@
 <header class="header">
   <h1 class="title">WeatherPlan</h1>
-  <!-- ToDo: add 'i' icon -->
   <div class="header__actions">
     <app-city-search (search)="onCitySearch($event)"></app-city-search>
-    <button mat-icon-button #menuBtn class="save-btn" (click)="toggleSavedLocations($event)"><mat-icon>bookmark</mat-icon></button>
+    <div class="saved-wrapper">
+      <button mat-icon-button class="save-btn" (click)="toggleSavedLocations($event)">
+        <mat-icon>bookmark</mat-icon>
+      </button>
+      @if (showSavedLocations) {
+        <div #sidebar class="dropdown-card">
+          <h3>Saved Locations</h3>
+          <app-saved-locations></app-saved-locations>
+        </div>
+      }
+    </div>
   </div>
 </header>
 <div class="container">
@@ -18,11 +27,6 @@
         <app-weather-dashboard></app-weather-dashboard>
         <app-activity-suggestions></app-activity-suggestions>
       </div>
-    }
-    @if(showSavedLocations) {
-      <aside #sidebar class="sidebar">
-        <app-saved-locations ></app-saved-locations>
-      </aside>
     }
   </main>
   <footer class="forecast-section">

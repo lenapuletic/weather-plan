@@ -22,17 +22,34 @@ export class WeatherDashboardComponent {
     return iconCode ? `https://openweathermap.org/img/wn/${iconCode}@2x.png` : '';
   });
 
-  onSaveLocation() {
+  readonly isSaved = computed(() => {
+    const current = this.store.currentWeather();
+    const saved = this.store.savedLocations();
+
+    if (!current) return false;
+
+    return saved.some(savedLocation => 
+      savedLocation.name === current.name && savedLocation.country === current.sys.country
+    );
+  });
+
+  onSaveLocation(event: MouseEvent) {
+    event.stopPropagation();
     const weather = this.currentWeather();
     if (weather) {
       console.log(weather)
-      const locationToSave: GeolocationData = {
+      const selectedLocation: GeolocationData = {
         name: weather.name,
         country: weather.sys.country ?? 'N/A',
         lat: weather.coord.lat,
         lon: weather.coord.lon
       };
-      this.store.addLocation(locationToSave);
+      if(this.isSaved()) {
+        this.store.removeLocation(selectedLocation);
+      } else {
+        this.store.addLocation(selectedLocation);
+
+      }
     }
   }
 }

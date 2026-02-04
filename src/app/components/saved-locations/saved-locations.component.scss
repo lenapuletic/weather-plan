@@ -1,17 +1,3 @@
-.card {
-    background-color: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
-    margin-bottom: 1rem;
-}
-
 .locations-list {
     list-style: none;
     padding: 0;
@@ -41,6 +27,6 @@ li {
     color: #94a3b8;
     cursor: pointer;
     &:hover {
-      color: #ef4444;
+      color: #1e293b;
     }
 }

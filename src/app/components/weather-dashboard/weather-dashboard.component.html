@@ -12,8 +12,10 @@
 @if(weather) {
   <div class="card main-weather-card"> <div class="header">
     <div class="location-group">
-      <button mat-icon-button class="save-btn" (click)="onSaveLocation()">
-        <mat-icon>favorite_border</mat-icon>
+      <button mat-icon-button class="save-btn" (click)="onSaveLocation($event)">
+        <mat-icon>
+          {{ isSaved() ? 'favorite' : 'favorite_border' }}
+        </mat-icon>
       </button>
       <div class="location-info">
         <h2>

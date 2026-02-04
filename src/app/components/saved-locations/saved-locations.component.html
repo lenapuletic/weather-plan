@@ -1,15 +1,12 @@
 @if(store.savedLocations().length > 0) {
-    <div class="card">
-        <h3>Saved Locations</h3>
-        <ul class="locations-list">
-            @for(location of store.savedLocations(); track location.name) {
-                <li (click)="onLocationSelect(location)">
-                    <span>{{ location.name }}</span>
-                    <button class="remove-btn" (click)="onRemoveLocation($event, location)">&times;</button>
-                </li>
-            }
-        </ul>
-    </div>
+    <ul class="locations-list">
+        @for(location of store.savedLocations(); track location.name) {
+            <li (click)="onLocationSelect(location)">
+                <span>{{ location.name }}</span>
+                <button class="remove-btn" (click)="onRemoveLocation($event, location)">&times;</button>
+            </li>
+        }
+    </ul>
 } @else {
     <div class="card">
         <p>You haven't saved any locations yet</p>

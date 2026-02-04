@@ -56,11 +56,17 @@ export const WeatherStore = signalStore(
           )
         )
       ),
-      addLocation(location: GeolocationData) {
-        const updated = [...store.savedLocations(), location];
-        patchState(store, { savedLocations: updated });
+      addLocation(newLocation: GeolocationData) {
+        const currentSaved = store.savedLocations();
+        const exists = currentSaved.some(savedLocation => 
+          savedLocation.name === newLocation.name && savedLocation.country === newLocation.country
+        );
+
+        if (!exists) {
+          const updated = [...currentSaved, newLocation];
+          patchState(store, { savedLocations: updated });
+        }
       },
-  
       removeLocation(location: GeolocationData) {
         const updated = store.savedLocations().filter(l => 
           l.name !== location.name || l.country !== location.country
