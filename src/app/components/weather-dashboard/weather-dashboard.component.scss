@@ -53,11 +53,21 @@
             font-size: 2rem;
             width: 2rem;
             height: 2rem;
+
+            @media (min-width: 1700px) {
+              font-size: 3rem;
+              width: 3rem;
+              height: 3rem;
+            }
           }
   
           &:hover {
             transform: scale(1.1);
             color: #000000;
+          }
+
+          @media (min-width: 1700px) {
+            margin-top: 1rem;
           }
         }
   
@@ -68,6 +78,10 @@
             color: #1e293b;
             margin: 0;
             line-height: 1.1;
+
+            @media (min-width: 1700px) {
+              font-size: 6rem;
+            }
           }
   
           .date {
@@ -75,6 +89,9 @@
             color: #64748b;
             margin: 0.5rem 0 0 0;
             font-weight: 500;
+            @media (min-width: 1700px) {
+              font-size: 1.5rem;
+            }
           }
         }
       }
@@ -82,17 +99,29 @@
   
     .details {
       grid-column: 1;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 1.5rem;
       margin-top: 2rem;
-  
+
+      @media (min-width: 1400px) {
+        display: flex;
+      }
+      
+      @media (min-width: 1700px) {
+        margin-top: 0;
+      }
       .detail-item {
         background-color: #f8fafc;
-        padding: 1rem 1rem;
+        padding: 1rem;
         border-radius: 1rem;
         text-align: center;
         min-width: 100px;
-  
+
+        @media (min-width: 1700px) {
+          padding: 1.5rem;
+        }
+        
         .label {
           display: block;
           font-size: 0.85rem;
