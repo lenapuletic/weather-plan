@@ -30,7 +30,7 @@ export class CitySearchComponent {
 
   constructor() {
     this.filteredCities$ = this.searchControl.valueChanges.pipe(
-      debounceTime(300),
+      debounceTime(100),
       distinctUntilChanged(),
       filter(value => !!value),
       switchMap(value => 

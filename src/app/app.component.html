@@ -3,7 +3,9 @@
     <h1 class="title">WeatherPlan</h1>
   </a>
   <div class="header__actions">
-    <app-city-search (search)="onCitySearch($event)"></app-city-search>
+    @if(currentWeather()) {
+      <app-city-search (search)="onCitySearch($event)"></app-city-search>
+    }
     <div class="saved-wrapper">
       <button mat-icon-button class="save-btn" (click)="toggleSavedLocations($event)">
         <mat-icon>bookmark</mat-icon>
@@ -13,13 +15,16 @@
           <h3>Saved Locations</h3>
           <app-saved-locations></app-saved-locations>
         </div>
+        
       }
     </div>
   </div>
 </header>
 @if(!currentWeather() && !isLoading() && !error()) {
   <div class="no-location">
-      <p>Search for a city to see the weather or chose one of previously saved locations...</p>
+    <h1 class="hero-title">Discover your perfect weather & activities</h1>
+    <p class="hero-subtitle">Start by searching for a city</p>
+    <app-city-search (search)="onCitySearch($event)"></app-city-search>
   </div>
 }
 @else if (isLoading()) {

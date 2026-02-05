@@ -98,11 +98,17 @@
   height: 50vh;
   text-align: center;
   color: #334155;
-  
-  p {
-    margin-top: 1rem;
+    
+  .hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-subtitle {
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
     font-size: 1.1rem;
-    color: #64748b;
     max-width: 400px;
     line-height: 1.5;
   }
