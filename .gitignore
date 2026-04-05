@@ -41,5 +41,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# environment.ts contains secret API keys for local development
+# Local dev API key (copy from environment.example.ts)
 /src/environments/environment.ts

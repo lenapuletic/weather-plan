@@ -48,17 +48,38 @@ To ensure quality, a responsive overlay has been implemented for screens smaller
     npm install
     ```
 
-3.  **Run the application**
+3.  **OpenWeather API key (local development)**
+
+    Production builds do **not** store the API key in git. For local `ng serve`, create your own key file:
+
     ```bash
-    ng serve
+    cp src/environments/environment.example.ts src/environments/environment.ts
+    ```
+
+    Edit `src/environments/environment.ts` and set `openWeather.key` to your key from [OpenWeather](https://openweathermap.org/api).
+
+    **If an API key was ever committed to this repository**, rotate it in the OpenWeather dashboard and use the new key only in `environment.ts` (local) or in CI as `OPENWEATHER_API_KEY`.
+
+4.  **Run the application**
+    ```bash
+    npm start
     ```
     Navigate to `http://localhost:4200/`.
+
+### Production build and deploy
+
+`npm run build` and `npm run deploy` require the key at build time via the environment variable `OPENWEATHER_API_KEY`. The build runs `scripts/generate-secrets.mjs`, which overwrites the committed stub `src/environments/environment.secrets.ts` before `ng build`. After a **local** production build, discard changes to that file if it now contains your key (do not commit real keys).
+
+```bash
+OPENWEATHER_API_KEY=your_key npm run build
+```
+
+In GitHub Actions (or any CI), add `OPENWEATHER_API_KEY` as a secret and run `npm run build` (or `npm run deploy`) so the script can refresh `environment.secrets.ts` before `ng build`.
+
+If you run `ng build` or `ng deploy` directly without `npm run` scripts, run `node scripts/generate-secrets.mjs` first with `OPENWEATHER_API_KEY` set, or temporarily edit `src/environments/environment.secrets.ts` locally (do not commit the real key).
 
 ## 🔮 Future Improvements
 
 * Full mobile responsiveness adaptation.
 * Unit testing with Jest.
 
----
-
-_Built with ❤️ by Lena Puletic
