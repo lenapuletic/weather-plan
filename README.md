@@ -5,6 +5,8 @@
 ![RxJS](https://img.shields.io/badge/RxJS-Stream%20Management-B7178C?style=flat&logo=reactivex)
 ![Status](https://img.shields.io/badge/Status-Desktop%20First-blue)
 
+### [🚀 Click to View Live Demo](https://lenapuletic.github.io/weather-plan/)
+
 A reactive weather dashboard built with **Angular 19**, designed to demonstrate modern state management patterns using a hybrid of **Signals** and **RxJS**.
 
 The application goes beyond basic API calls by implementing robust error handling, local state persistence, and intelligent data transformation to provide activity suggestions based on real-time weather conditions.
