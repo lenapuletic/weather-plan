@@ -2,14 +2,27 @@
   display: block;
 }
 
+:host-context(.header__actions) {
+  width: 100%;
+  max-width: none;
+}
+
 .search-form {
   width: 100%;
   max-width: 380px;
 }
 
+:host-context(.header__actions) .search-form {
+  max-width: none;
+}
+
 .search-field {
   width: 100%;
   max-width: 340px;
+}
+
+:host-context(.header__actions) .search-field {
+  max-width: none;
 }
 
 ::ng-deep .search-field.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,

@@ -73,10 +73,12 @@
     letter-spacing: -0.01em;
   }
 
-  &:hover {
-    transform: translateX(4px);
-    background: #fff;
-    border-color: rgba(79, 70, 229, 0.2);
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.08);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateX(4px);
+      background: #fff;
+      border-color: rgba(79, 70, 229, 0.2);
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.08);
+    }
   }
 }

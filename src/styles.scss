@@ -55,11 +55,6 @@ body {
     ),
     linear-gradient(165deg, #e0e7ff 0%, #c7d2fe 40%, #a5b4fc 100%);
   background-attachment: fixed;
-
-  @media (max-width: 900px) {
-    height: 100vh;
-    overflow: hidden;
-  }
 }
 
 body {

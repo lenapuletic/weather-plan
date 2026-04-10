@@ -4,7 +4,7 @@
 }
 
 .forecast-panel {
-  padding: 1.35rem 1.5rem 1.5rem;
+  padding: clamp(1rem, 3vw, 1.35rem) clamp(1rem, 3vw, 1.5rem) 1.5rem;
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid var(--wp-border-subtle);
   border-radius: var(--wp-radius-xl);
@@ -44,7 +44,7 @@ h3 {
 
 .forecast-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.65rem;
 }
 
@@ -56,10 +56,12 @@ h3 {
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
-    border-color: rgba(79, 70, 229, 0.15);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+      border-color: rgba(79, 70, 229, 0.15);
+    }
   }
 }
 
@@ -96,14 +98,38 @@ img {
   margin-left: 0.35rem;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
   .forecast-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.35rem;
+    margin: 0 -0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable;
   }
-}
 
-@media (max-width: 600px) {
-  .forecast-grid {
-    grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+  .day-card {
+    flex: 0 0 auto;
+    min-width: 5.5rem;
+    scroll-snap-align: start;
+  }
+
+  img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .day-name {
+    font-size: 0.75rem;
+  }
+
+  .temp {
+    font-size: 0.875rem;
   }
 }
