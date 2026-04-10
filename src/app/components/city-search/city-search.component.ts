@@ -1,9 +1,20 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { catchError, debounceTime, distinctUntilChanged, filter, Observable, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  Observable,
+  of,
+  switchMap,
+} from 'rxjs';
 import { GeolocationData } from '../../interface/weather.interface';
 import { WeatherService } from '../../services/weather.service';
 import { AsyncPipe } from '@angular/common';
@@ -15,10 +26,10 @@ import { AsyncPipe } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    AsyncPipe
+    AsyncPipe,
   ],
   templateUrl: './city-search.component.html',
-  styleUrl: './city-search.component.scss'
+  styleUrl: './city-search.component.scss',
 })
 export class CitySearchComponent {
   @Output() search = new EventEmitter<GeolocationData>();
@@ -30,22 +41,21 @@ export class CitySearchComponent {
 
   constructor() {
     this.filteredCities$ = this.searchControl.valueChanges.pipe(
-      debounceTime(100),
       distinctUntilChanged(),
-      filter(value => !!value),
-      switchMap(value => 
+      filter((value) => !!value),
+      switchMap((value) =>
         this.weatherService.getCitySuggestions(value!).pipe(
-          catchError(err => {
+          catchError((err) => {
             return of([]);
-          })
-        )
-      )
+          }),
+        ),
+      ),
     );
   }
-  
+
   onOptionSelected(event: MatAutocompleteSelectedEvent) {
     const city: GeolocationData = event.option.value;
-    this.search.emit(city); 
+    this.search.emit(city);
   }
   displayFn(city: GeolocationData): string {
     return city && city.name ? `${city.name}, ${city.country}` : '';

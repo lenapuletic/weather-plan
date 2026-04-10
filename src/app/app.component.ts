@@ -6,6 +6,7 @@ import { SavedLocationsComponent } from './components/saved-locations/saved-loca
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { WeatherStore } from './store/weather.store';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { GeolocationData } from './interface/weather.interface';
 
 @Component({
@@ -16,7 +17,8 @@ import { GeolocationData } from './interface/weather.interface';
     ActivitySuggestionsComponent,
     SavedLocationsComponent,
     ForecastComponent,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

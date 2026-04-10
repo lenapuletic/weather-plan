@@ -1,5 +1,6 @@
 <header class="header">
   <a href="./" class="title-link">
+    <span class="title-mark" aria-hidden="true"></span>
     <h1 class="title">WeatherPlan</h1>
   </a>
   <div class="header__actions">
@@ -7,7 +8,7 @@
       <app-city-search (search)="onCitySearch($event)"></app-city-search>
     }
     <div class="saved-wrapper">
-      <button mat-icon-button class="save-btn" (click)="toggleSavedLocations($event)">
+      <button #menuBtn mat-icon-button type="button" class="save-btn header-icon-btn wp-shape-rounded" (click)="toggleSavedLocations($event)">
         <mat-icon>bookmark</mat-icon>
       </button>
       @if (showSavedLocations) {
@@ -22,20 +23,23 @@
 </header>
 @if(!currentWeather() && !isLoading() && !error()) {
   <div class="no-location">
-    <h1 class="hero-title">Discover your perfect weather & activities</h1>
-    <p class="hero-subtitle">Start by searching for a city</p>
-    <app-city-search (search)="onCitySearch($event)"></app-city-search>
+    <p class="hero-eyebrow">Welcome</p>
+    <h1 class="hero-title">Discover your perfect weather &amp; activities</h1>
+    <p class="hero-subtitle">Search any city to see conditions, a five-day outlook, and ideas for what to do outdoors.</p>
+    <app-city-search class="hero-search" (search)="onCitySearch($event)"></app-city-search>
   </div>
 }
 @else if (isLoading()) {
-  <div class="card loading">
-    <p>Loading weather data...</p>
-</div>
+  <div class="card card--state loading">
+    <div class="state-spinner" aria-hidden="true"></div>
+    <p>Loading weather data…</p>
+  </div>
 }
 @else if (error()) {
-  <div class="card error">
+  <div class="card card--state error">
+    <mat-icon class="state-icon">error_outline</mat-icon>
     <p>{{ error() }}</p>
-</div>
+  </div>
 }
 @else {
   <div class="container">

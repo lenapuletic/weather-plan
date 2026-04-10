@@ -1,32 +1,74 @@
 .locations-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    &:hover {
-      background-color: #f1f5f9;
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--wp-radius-sm);
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.18s ease;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--wp-color-slate-700);
+  border: 1px solid transparent;
+
+  span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &:hover {
+    background: var(--wp-color-accent-soft);
+    border-color: rgba(79, 70, 229, 0.12);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
 }
 
 .remove-btn {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    color: #94a3b8;
-    cursor: pointer;
-    &:hover {
-      color: #1e293b;
-    }
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--wp-color-slate-400);
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--wp-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    color: #dc2626;
+    background: rgba(220, 38, 38, 0.08);
+  }
+}
+
+.card {
+  margin: 0;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--wp-color-slate-500);
+  line-height: 1.5;
+  background: var(--wp-color-slate-50);
+  border: 1px dashed var(--wp-border-subtle);
+  border-radius: var(--wp-radius-md);
+  box-shadow: none;
 }

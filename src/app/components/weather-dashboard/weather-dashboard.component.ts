@@ -3,10 +3,11 @@ import { WeatherStore } from '../../store/weather.store';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { GeolocationData } from '../../interface/weather.interface';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-weather-dashboard',
-  imports: [DatePipe, DecimalPipe, MatIconModule],
+  imports: [DatePipe, DecimalPipe, MatIconModule, MatButtonModule],
   templateUrl: './weather-dashboard.component.html',
   styleUrl: './weather-dashboard.component.scss'
 })

@@ -1,6 +1,9 @@
 @if(store.forecast()) {
-    <div class="card">
-        <h3>5-Day Forecast</h3>
+    <div class="card forecast-panel">
+        <div class="forecast-panel__head">
+            <h3>5-day forecast</h3>
+            <span class="forecast-panel__hint">Daily highs &amp; lows</span>
+        </div>
         <div class="forecast-grid">
             @for(day of dailyForecast(); track day.dt_txt) {
                 <div class="day-card">
