@@ -9,14 +9,14 @@
     @if(currentWeather() || error()) {
       <app-city-search (search)="onCitySearch($event)"></app-city-search>
     }
-    <div class="saved-wrapper">
-      <button #menuBtn mat-icon-button type="button" class="save-btn header-icon-btn wp-shape-rounded" (click)="toggleSavedLocations($event)">
+    <div class="saved-wrapper" #savedPanel>
+      <button mat-icon-button type="button" class="save-btn header-icon-btn wp-shape-rounded" (click)="toggleSavedLocations($event)">
         <mat-icon>bookmark</mat-icon>
       </button>
       @if (showSavedLocations) {
-        <div #sidebar class="dropdown-card">
+        <div class="dropdown-card">
           <h3>Saved Locations</h3>
-          <app-saved-locations></app-saved-locations>
+          <app-saved-locations (locationSelected)="closeSavedLocations()"></app-saved-locations>
         </div>
         
       }

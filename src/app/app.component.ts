@@ -25,11 +25,8 @@ import { GeolocationData } from './interface/weather.interface';
 })
 export class AppComponent {
   readonly store = inject(WeatherStore);
-  private eRef = inject(ElementRef);
-  
-  @ViewChild('sidebar') sidebarElement?: ElementRef;
-  
-  @ViewChild('menuBtn') menuBtn?: ElementRef;
+
+  @ViewChild('savedPanel') savedPanel?: ElementRef<HTMLElement>;
 
   readonly currentWeather = this.store.currentWeather;
   readonly isLoading = this.store.isLoading;
@@ -38,14 +35,14 @@ export class AppComponent {
 
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {
-    if (!this.showSavedLocations || !this.sidebarElement) return;
+    if (!this.showSavedLocations || !this.savedPanel) return;
 
-    const clickedInsideSidebar = this.sidebarElement.nativeElement.contains(event.target);
-    const clickedBtn = this.menuBtn?.nativeElement.contains(event.target);
-
-    if (!clickedInsideSidebar && !clickedBtn) {
-      this.showSavedLocations = false;
+    const target = event.target;
+    if (target instanceof Node && this.savedPanel.nativeElement.contains(target)) {
+      return;
     }
+
+    this.showSavedLocations = false;
   }
 
   onCitySearch(city: GeolocationData) {
@@ -54,5 +51,10 @@ export class AppComponent {
   }
 
   toggleSavedLocations(event: Event) {
-    this.showSavedLocations = !this.showSavedLocations;  }
+    this.showSavedLocations = !this.showSavedLocations;
+  }
+
+  closeSavedLocations() {
+    this.showSavedLocations = false;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, output } from '@angular/core';
 import { WeatherStore } from '../../store/weather.store';
 import { GeolocationData } from '../../interface/weather.interface';
 
@@ -11,9 +11,12 @@ import { GeolocationData } from '../../interface/weather.interface';
 export class SavedLocationsComponent {
   readonly store = inject(WeatherStore);
 
+  readonly locationSelected = output<void>();
+
   onLocationSelect(location: GeolocationData) {
     this.store.loadCurrentWeather(location);
     this.store.loadForecast(location);
+    this.locationSelected.emit();
   }
 
   onRemoveLocation(event: MouseEvent, location: GeolocationData) {
