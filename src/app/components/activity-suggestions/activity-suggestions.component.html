@@ -1,13 +1,18 @@
 @if (store.currentWeather()) {
-    <div class="card">
-        <h3 class="section-label">Perfect weather for</h3>
-        <div class="activities-grid">
-            @for(activity of suggestedActivities(); track activity.title) {
-                <div class="activity-card">
-                    <mat-icon>{{activity.icon}}</mat-icon>
-                    <span>{{ activity.title }}</span>
-                </div>
-            }
-        </div>
+  <div class="card">
+    <h3 class="section-label">Perfect weather for</h3>
+    <p class="section-hint">Select an activity for AI-generated tips.</p>
+    <div class="activities-grid">
+      @for (activity of suggestedActivities(); track activity.title) {
+        <button
+          type="button"
+          class="activity-card"
+          (click)="openInsight(activity)"
+        >
+          <mat-icon aria-hidden="true">{{ activity.icon }}</mat-icon>
+          <span>{{ activity.title }}</span>
+        </button>
+      }
     </div>
+  </div>
 }

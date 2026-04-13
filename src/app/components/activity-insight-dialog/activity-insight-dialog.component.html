@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{ data.activityTitle }} in {{ data.city }}</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p class="context-line">
+    {{ data.weatherSummary }}
+  </p>
+
+  <div class="dialog-main">
+    @if (loading()) {
+      <div class="loading-row" aria-busy="true">
+        <mat-spinner diameter="36" />
+        <span>Generating local tips…</span>
+      </div>
+    }
+
+    @if (error(); as errMsg) {
+      <p class="error-text" role="alert">{{ errMsg }}</p>
+    }
+
+    @if (insight(); as text) {
+      <div class="insight-body">{{ text }}</div>
+    }
+  </div>
+
+  <p class="disclaimer">
+    Tips are AI-generated for inspiration only. Verify hours, access, and safety
+    before you go.
+  </p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button
+    mat-stroked-button
+    type="button"
+    class="wp-dialog-btn wp-dialog-btn--secondary"
+    (click)="openGoogle()"
+  >
+    <mat-icon>open_in_new</mat-icon>
+    Search on Google
+  </button>
+  <button
+    mat-flat-button
+    type="button"
+    class="wp-dialog-btn wp-dialog-btn--primary"
+    mat-dialog-close
+  >
+    Close
+  </button>
+</mat-dialog-actions>

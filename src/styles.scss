@@ -130,3 +130,24 @@ body {
   .mdc-notched-outline__notch {
   border-left: none !important;
 }
+
+.cdk-overlay-pane.wp-activity-insight-dialog-shell .mat-mdc-dialog-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.cdk-overlay-pane.wp-activity-insight-dialog-shell .mat-mdc-dialog-surface {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cdk-overlay-pane.wp-activity-insight-dialog-shell .mat-mdc-dialog-title,
+.cdk-overlay-pane.wp-activity-insight-dialog-shell .mat-mdc-dialog-content {
+  max-width: 100%;
+  box-sizing: border-box;
+}

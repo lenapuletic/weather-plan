@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node scripts/generate-secrets.mjs --allow-missing && ng serve",
     "build": "node scripts/generate-secrets.mjs && ng build",
     "build:gh-pages": "node scripts/generate-secrets.mjs && ng build --configuration production,gh-pages",
     "watch": "ng build --watch --configuration development",

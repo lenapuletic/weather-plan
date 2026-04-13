@@ -9,7 +9,7 @@
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid var(--wp-border-subtle);
   border-radius: var(--wp-radius-xl);
-  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(0.75rem, 2.5vw, 1rem);
   box-shadow: var(--wp-shadow-card);
   height: 100%;
   transition: box-shadow 0.25s ease;
@@ -24,9 +24,16 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--wp-color-slate-800);
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.35rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--wp-border-subtle);
+}
+
+.section-hint {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: var(--wp-color-slate-500);
+  line-height: 1.35;
 }
 
 .activities-grid {
@@ -39,6 +46,9 @@
 }
 
 .activity-card {
+  width: 100%;
+  text-align: left;
+  font: inherit;
   background: var(--wp-color-slate-50);
   border: 1px solid var(--wp-border-subtle);
   border-radius: var(--wp-radius-md);
@@ -51,7 +61,7 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  cursor: default;
+  cursor: pointer;
 
   @media (min-width: 1700px) {
     padding: 1.1rem 1.15rem;

@@ -3,8 +3,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.25rem clamp(1.25rem, 4vw, 4rem) 2.5rem;
   padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   padding-left: max(1.25rem, env(safe-area-inset-left));
   padding-right: max(1.25rem, env(safe-area-inset-right));
