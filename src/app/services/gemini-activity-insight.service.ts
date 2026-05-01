@@ -102,13 +102,17 @@ export class GeminiActivityInsightService {
   private readonly http = inject(HttpClient);
 
   getInsight(req: ActivityInsightRequest): Observable<string> {
-    const key = environment.gemini.apiKey?.trim();
-    if (!key) {
-      return throwError(() => new Error('Gemini API key is not configured.'));
+    if (!this.isGeminiConfigured()) {
+      return throwError(
+        () =>
+          new Error(
+            'Gemini is not configured. For production use a proxy URL (see README); for local dev set gemini.proxyBaseUrl or gemini.apiKey in environment.ts.',
+          ),
+      );
     }
 
     const models = this.resolveModelOrder();
-    return this.tryModels(models, 0, req, key);
+    return this.tryModels(models, 0, req);
   }
 
   /** Preferred model first, then deduped fallbacks. */
@@ -124,7 +128,6 @@ export class GeminiActivityInsightService {
     models: string[],
     index: number,
     req: ActivityInsightRequest,
-    key: string,
   ): Observable<string> {
     if (index >= models.length) {
       return throwError(
@@ -136,10 +139,10 @@ export class GeminiActivityInsightService {
     }
 
     const model = models[index]!;
-    return this.postGenerateContent(model, req, key).pipe(
+    return this.postGenerateContent(model, req).pipe(
       catchError((err) => {
         if (shouldTryNextModel(err) && index + 1 < models.length) {
-          return this.tryModels(models, index + 1, req, key);
+          return this.tryModels(models, index + 1, req);
         }
         return throwError(() => new Error(formatInsightHttpError(err)));
       }),
@@ -149,9 +152,25 @@ export class GeminiActivityInsightService {
   private postGenerateContent(
     model: string,
     req: ActivityInsightRequest,
-    key: string,
   ): Observable<string> {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
+    const proxyBase = environment.gemini.proxyBaseUrl?.trim();
+    const key = environment.gemini.apiKey?.trim();
+
+    let url: string;
+    let params: HttpParams | undefined;
+
+    if (proxyBase) {
+      const base = proxyBase.replace(/\/$/, '');
+      url = `${base}/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+      params = undefined;
+    } else if (key) {
+      url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+      params = new HttpParams().set('key', key);
+    } else {
+      return throwError(
+        () => new Error('Gemini is not configured (missing proxy URL and API key).'),
+      );
+    }
 
     const systemText =
       'You help travelers pick realistic things to do. Reply in plain text (short paragraphs or bullet lines with leading "- "). ' +
@@ -177,10 +196,8 @@ export class GeminiActivityInsightService {
       ],
     };
 
-    const params = new HttpParams().set('key', key);
-
     return this.http
-      .post<GeminiGenerateContentResponse>(url, body, { params })
+      .post<GeminiGenerateContentResponse>(url, body, params ? { params } : {})
       .pipe(
         map((res) => {
           if (res.error?.message) {
@@ -199,6 +216,13 @@ export class GeminiActivityInsightService {
 
   /** For tests / UI checks without calling the API */
   hasApiKey(): boolean {
-    return Boolean(environment.gemini.apiKey?.trim());
+    return this.isGeminiConfigured();
+  }
+
+  private isGeminiConfigured(): boolean {
+    return Boolean(
+      environment.gemini.proxyBaseUrl?.trim() ||
+        environment.gemini.apiKey?.trim(),
+    );
   }
 }

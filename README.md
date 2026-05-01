@@ -18,7 +18,7 @@ The application goes beyond basic API calls by implementing robust error handlin
 - **Smart Search:** Real-time city search with autocomplete powered by the OpenWeather geocoding API.
 - **Reactive Dashboard:** Displays current weather, 5-day forecast, and environmental details (humidity, pressure, wind).
 - **Activity suggestions:** Six curated activities per weather profile; the UI shows **four at a time**, chosen at random whenever the current weather updates so the list feels fresh.
-- **AI-generated activity insights (optional):** Select an activity to open a dialog with **Gemini**-generated tips for that city and activity (plus weather context). If no API key is configured or the model is rate-limited, the dialog still offers **Search on Google** and a clear message.
+- **AI-generated activity insights (optional):** Select an activity to open a dialog with **Gemini**-generated tips for that city and activity (plus weather context). Gemini is called through a **small Node proxy** in production so the API key is not bundled into `main-*.js`. If the proxy is not configured or the model is rate-limited, the dialog still offers **Search on Google** and a clear message.
 - **Local Persistence:** Users can "bookmark" locations, which are saved to LocalStorage and persist between sessions.
 - **Responsive layout:** The UI adapts from large desktops down to narrow phones (flexible header, stacked dashboard and forecast, tuned spacing and typography).
 
@@ -28,7 +28,7 @@ This project focuses on architectural best practices for modern Angular applicat
 
 - **SignalStore Architecture:** leveraged `signalStore` with custom features (`withMethods`, `withHooks`) to manage global state (loading, error, data) in a clean, reactive way without the boilerplate of Redux.
 - **Signals & RxJS Interop:** Uses **Signals** for synchronous UI rendering while leveraging **RxJS** for asynchronous streams (for example city search with `distinctUntilChanged` and `switchMap`).
-- **Stream Safety:** Implements the `catchError` operator inside `switchMap` to prevent "Stream Death," ensuring the search observable stays alive even after API failures (404s).
+- **Stream Safety:** Uses the `catchError` operator inside `switchMap` to prevent "Stream Death," ensuring the search observable stays alive even after API failures (404s).
 - **Performance & UX:**
   - **Autocomplete pipeline:** Ignores duplicate consecutive queries and cancels in-flight geocoding requests when the user types again (`switchMap`).
   - **TrackBy Optimization:** Uses stable keys (`activity.title`, forecast date strings) in `@for` loops to minimize DOM re-rendering.
@@ -53,30 +53,33 @@ The layout is built with **CSS breakpoints** so the same app works on wide monit
    npm install
    ```
 
-3. **Environment files (local development)**
+3. **Environment files**
 
-   The app reads API keys from [`src/environments/environment.secrets.ts`](src/environments/environment.secrets.ts) (committed **stub** in the repo; replace locally, never commit real keys). [`src/environments/environment.ts`](src/environments/environment.ts) is **gitignored** and imports that secrets module.
-   - Copy the example app environment (only needed the first time):
+   - **OpenWeather:** [`src/environments/environment.secrets.ts`](src/environments/environment.secrets.ts) is a committed stub; production builds overwrite it via `scripts/generate-secrets.mjs`. For local dev, either run:
 
      ```bash
-     cp src/environments/environment.example.ts src/environments/environment.ts
+     OPENWEATHER_API_KEY=your_key node scripts/generate-secrets.mjs
      ```
 
-   - Put your keys into `environment.secrets.ts` in either of these ways:
-     - **Recommended (matches CI):** run the generator from the project root (requires `OPENWEATHER_API_KEY`; `GEMINI_API_KEY` is optional for AI tips):
+     or edit `environment.secrets.ts` by hand (see [`environment.secrets.example.ts`](src/environments/environment.secrets.example.ts)).
+
+   - **Gemini (optional):** the **Gemini API key must not** be baked into GitHub Pages builds. Use the proxy (below). For local development you can either:
+     - Run the proxy and point the app at it (recommended):
 
        ```bash
-       OPENWEATHER_API_KEY=your_key GEMINI_API_KEY=optional_gemini_key node scripts/generate-secrets.mjs
+       GEMINI_API_KEY=your_gemini_key ALLOW_ORIGINS=http://localhost:4200 npm run gemini-proxy
        ```
 
-     - **Or** edit `src/environments/environment.secrets.ts` by hand (see [`environment.secrets.example.ts`](src/environments/environment.secrets.example.ts) for the shape).
+       Then in [`src/environments/environment.ts`](src/environments/environment.ts) set `gemini.proxyBaseUrl` to `http://localhost:8787` (and leave `gemini.apiKey` empty).
+
+     - **Or** set `gemini.apiKey` in `environment.ts` for direct browser calls (fine on localhost only; never commit a production build with a real key in the client).
 
    - Get an OpenWeather key at [OpenWeather](https://openweathermap.org/api).
-   - **Optional — AI activity tips:** create a Gemini key in [Google AI Studio](https://aistudio.google.com/apikey). Under **Application restrictions**, use **HTTP referrers** and add your origins (for example `http://localhost:4200/*` for local dev and `https://YOUR_USERNAME.github.io/*` for GitHub Pages). The client calls Gemini with a **fallback chain** of Flash models when one returns 429 or quota errors; you can pin a model with `gemini.model` in [`environment.example.ts`](src/environments/environment.example.ts) / [`environment.prod.ts`](src/environments/environment.prod.ts).
+   - Create a Gemini key in [Google AI Studio](https://aistudio.google.com/apikey) and use it **only** in the proxy’s `GEMINI_API_KEY` (or in local `environment.ts` for direct dev). You can pin a model with `gemini.model` in [`environment.ts`](src/environments/environment.ts) / [`environment.prod.ts`](src/environments/environment.prod.ts).
 
    **`npm start`** runs `node scripts/generate-secrets.mjs --allow-missing` first: if `OPENWEATHER_API_KEY` is set in your shell, `environment.secrets.ts` is refreshed; if not, your existing `environment.secrets.ts` is left unchanged so local keys are not wiped.
 
-   **If an API key was ever committed to this repository**, rotate it in the provider dashboard and use the new key only in `environment.secrets.ts` (local) or in CI secrets.
+   **If an API key was ever committed or scanned from a public bundle**, rotate it in the provider dashboard.
 
 4. **Run the application**
 
@@ -86,17 +89,28 @@ The layout is built with **CSS breakpoints** so the same app works on wide monit
 
    Then open `http://localhost:4200/`.
 
+### Gemini proxy (production / GitHub Pages)
+
+The static app on GitHub Pages cannot hold a secret. [`server/gemini-proxy.mjs`](server/gemini-proxy.mjs) forwards `POST /v1beta/models/{model}:generateContent` to Google using `GEMINI_API_KEY` on the server.
+
+1. Deploy the proxy to a host that runs Node (for example [Render](https://render.com): New Web Service from this repo, start command `node server/gemini-proxy.mjs`, see optional [`render.yaml`](render.yaml)). Set environment variables:
+   - **`GEMINI_API_KEY`** — your new Gemini key (after rotating any leaked key).
+   - **`ALLOW_ORIGINS`** — comma-separated list of browser origins allowed to call the proxy, for example `http://localhost:4200,https://YOUR_USERNAME.github.io` (no path; GitHub Pages origin is `https://YOUR_USERNAME.github.io`).
+
+2. In [`src/environments/environment.prod.ts`](src/environments/environment.prod.ts), set `gemini.proxyBaseUrl` to the **HTTPS** origin of the deployed proxy (no trailing slash), for example `https://weather-plan-gemini-proxy.onrender.com`.
+
+3. Run `npm run build:gh-pages` / `npm run deploy` as usual. The client bundle will **not** contain the Gemini key.
+
+**Note:** The proxy URL is public; anyone can call it from an allowed origin. Keep `ALLOW_ORIGINS` tight and monitor usage in Google Cloud.
+
 ### Production build and deploy
 
-`npm run build` and `npm run deploy` require **`OPENWEATHER_API_KEY`** in the environment when `scripts/generate-secrets.mjs` runs (without `--allow-missing`), because the script overwrites `src/environments/environment.secrets.ts` before `ng build`. After a local production build, discard or revert changes to that file if it now contains real keys (do not commit them).
-
-You can also set **`GEMINI_API_KEY`** so production bundles include the Gemini key. If it is omitted, the script writes an empty Gemini key and the app still runs; only the AI insight dialog shows the “not configured” path until you add a key.
+`npm run build` and `npm run deploy` require **`OPENWEATHER_API_KEY`** in the environment when `scripts/generate-secrets.mjs` runs (without `--allow-missing`), because the script overwrites `src/environments/environment.secrets.ts` before `ng build`. After a local production build, discard or revert changes to that file if it now contains a real OpenWeather key (do not commit it).
 
 ```bash
 OPENWEATHER_API_KEY=your_key npm run build
-OPENWEATHER_API_KEY=your_key GEMINI_API_KEY=your_gemini_key npm run build
 ```
 
-In GitHub Actions (or any CI), add `OPENWEATHER_API_KEY` as a secret and run `npm run build` or `npm run deploy`. Add `GEMINI_API_KEY` optionally if you want AI tips in deployed builds.
+In GitHub Actions (or any CI), add `OPENWEATHER_API_KEY` as a secret and run `npm run build` or `npm run deploy`. Configure the Gemini proxy separately on your host and set `gemini.proxyBaseUrl` in `environment.prod.ts` before building the Pages artifact.
 
 If you run `ng build` or `ng deploy` directly without the `npm run` scripts, run `node scripts/generate-secrets.mjs` first with `OPENWEATHER_API_KEY` set, or temporarily edit `environment.secrets.ts` locally (do not commit real keys).

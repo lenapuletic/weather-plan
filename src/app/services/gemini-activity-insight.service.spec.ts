@@ -8,9 +8,11 @@ describe('GeminiActivityInsightService', () => {
   let service: GeminiActivityInsightService;
   let httpMock: HttpTestingController;
   const originalGeminiKey = environment.gemini.apiKey;
+  const originalProxyBase = environment.gemini.proxyBaseUrl;
   const originalModel = environment.gemini.model;
 
   beforeEach(() => {
+    environment.gemini.proxyBaseUrl = '';
     environment.gemini.apiKey = 'test-gemini-key';
     environment.gemini.model = '';
 
@@ -24,6 +26,7 @@ describe('GeminiActivityInsightService', () => {
   afterEach(() => {
     httpMock.verify();
     environment.gemini.apiKey = originalGeminiKey;
+    environment.gemini.proxyBaseUrl = originalProxyBase;
     environment.gemini.model = originalModel;
   });
 
@@ -104,13 +107,43 @@ describe('GeminiActivityInsightService', () => {
     httpReq.flush({ candidates: [] });
   });
 
-  it('hasApiKey should be false when key empty', () => {
+  it('hasApiKey should be false when key and proxy empty', () => {
     environment.gemini.apiKey = '';
+    environment.gemini.proxyBaseUrl = '';
     expect(service.hasApiKey()).toBe(false);
+  });
+
+  it('getInsight should use proxy URL when proxyBaseUrl is set', (done) => {
+    environment.gemini.apiKey = '';
+    environment.gemini.proxyBaseUrl = 'http://localhost:8787';
+
+    service
+      .getInsight({
+        city: 'Paris',
+        country: 'FR',
+        activityTitle: 'Walking',
+        weatherSummary: '20°C',
+      })
+      .subscribe({
+        next: (text) => {
+          expect(text).toBe('Via proxy');
+          done();
+        },
+        error: done.fail,
+      });
+
+    const httpReq = httpMock.expectOne((r) =>
+      r.url.startsWith('http://localhost:8787/v1beta/models/gemini-2.5-flash:generateContent'),
+    );
+    expect(httpReq.request.params.keys().length).toBe(0);
+    httpReq.flush({
+      candidates: [{ content: { parts: [{ text: 'Via proxy' }] } }],
+    });
   });
 
   it('getInsight should error immediately when key empty', (done) => {
     environment.gemini.apiKey = '';
+    environment.gemini.proxyBaseUrl = '';
     service
       .getInsight({
         city: 'A',

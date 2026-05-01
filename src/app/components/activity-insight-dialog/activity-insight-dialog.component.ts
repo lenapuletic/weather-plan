@@ -30,7 +30,7 @@ export class ActivityInsightDialogComponent implements OnInit {
     if (!this.gemini.hasApiKey()) {
       this.loading.set(false);
       this.error.set(
-        'AI tips are not configured. Add a Gemini API key to your environment (see README), or use Search on Google below.',
+        'AI tips are not configured. For GitHub Pages set gemini.proxyBaseUrl to your deployed proxy (see README). For local dev use the proxy or gemini.apiKey in environment.ts, or use Search on Google below.',
       );
       return;
     }
