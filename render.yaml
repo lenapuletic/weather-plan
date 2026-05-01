@@ -1,18 +1,20 @@
-# Optional: deploy server/gemini-proxy.mjs to Render (https://render.com)
+# Optional: deploy server/api-proxy.mjs to Render (https://render.com)
 # Create a new Web Service from this repo; Render can pick up this file or use:
 #   Build: (none)
-#   Start: node server/gemini-proxy.mjs
-# Env: GEMINI_API_KEY, ALLOW_ORIGINS (e.g. https://YOURNAME.github.io,https://YOURNAME.github.io/weather-plan/*)
+#   Start: node server/api-proxy.mjs
+# Env: GEMINI_API_KEY, OPENWEATHER_API_KEY, ALLOW_ORIGINS
 
 services:
   - type: web
-    name: weather-plan-gemini-proxy
+    name: weather-plan-api-proxy
     runtime: node
     plan: free
     buildCommand: "true"
-    startCommand: node server/gemini-proxy.mjs
+    startCommand: node server/api-proxy.mjs
     envVars:
       - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENWEATHER_API_KEY
         sync: false
       - key: ALLOW_ORIGINS
         sync: false

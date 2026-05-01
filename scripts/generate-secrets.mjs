@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 /**
  * Overwrites src/environments/environment.secrets.ts from env vars.
- * OPENWEATHER_API_KEY is required for production builds.
- * With `--allow-missing`, if the var is unset the script exits 0 without writing (for `ng serve`
- * when keys are already in environment.secrets.ts).
+ * OPENWEATHER_API_KEY is used for local direct OpenWeather calls.
+ * With `--allow-missing`, if the var is unset the script exits 0 without writing.
  *
- * Gemini API keys are not written here — use server/gemini-proxy.mjs + gemini.proxyBaseUrl in production.
+ * Gemini API keys are not written here — use server/api-proxy.mjs + gemini.proxyBaseUrl in production.
  */
 import { writeFileSync } from 'fs';
 import { dirname, join } from 'path';
@@ -26,9 +25,9 @@ if (!openWeatherKey || !String(openWeatherKey).trim()) {
     process.exit(0);
   }
   console.error(
-    'OPENWEATHER_API_KEY is not set. It is required for production builds.\n' +
+    'OPENWEATHER_API_KEY is not set.\n' +
       'Example: OPENWEATHER_API_KEY=your_key npm run build\n' +
-      'In CI, add OPENWEATHER_API_KEY as a secret and run this script before ng build.',
+      'Set --allow-missing if you are using the API proxy instead of direct client calls.',
   );
   process.exit(1);
 }

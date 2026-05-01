@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "gemini-proxy": "node server/gemini-proxy.mjs",
+    "api-proxy": "node server/api-proxy.mjs",
     "start": "node scripts/generate-secrets.mjs --allow-missing && ng serve",
-    "build": "node scripts/generate-secrets.mjs && ng build",
-    "build:gh-pages": "node scripts/generate-secrets.mjs && ng build --configuration production,gh-pages",
+    "build": "node scripts/generate-secrets.mjs --allow-missing && ng build",
+    "build:gh-pages": "node scripts/generate-secrets.mjs --allow-missing && ng build --configuration production,gh-pages",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "deploy": "node scripts/generate-secrets.mjs && ng deploy"
+    "deploy": "node scripts/generate-secrets.mjs --allow-missing && ng deploy"
   },
   "private": true,
   "dependencies": {
