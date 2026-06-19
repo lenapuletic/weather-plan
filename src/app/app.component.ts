@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, ViewChild } from '@angular/core';
 import { CitySearchComponent } from './components/city-search/city-search.component';
 import { WeatherDashboardComponent } from './components/weather-dashboard/weather-dashboard.component';
 import { ActivitySuggestionsComponent } from './components/activity-suggestions/activity-suggestions.component';
@@ -8,6 +8,7 @@ import { WeatherStore } from './store/weather.store';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { GeolocationData } from './interface/weather.interface';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -23,10 +24,17 @@ import { GeolocationData } from './interface/weather.interface';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   readonly store = inject(WeatherStore);
 
   @ViewChild('savedPanel') savedPanel?: ElementRef<HTMLElement>;
+
+  ngOnInit(): void {
+    const proxyBase = environment.openWeather.proxyBaseUrl?.trim();
+    if (proxyBase && !proxyBase.startsWith('http://localhost')) {
+      fetch(`${proxyBase}/health`).catch(() => undefined);
+    }
+  }
 
   readonly currentWeather = this.store.currentWeather;
   readonly isLoading = this.store.isLoading;

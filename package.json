@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "api-proxy": "node server/api-proxy.mjs",
-    "start": "node scripts/generate-secrets.mjs --allow-missing && ng serve",
+    "start": "node scripts/generate-secrets.mjs --allow-missing && node scripts/dev.mjs",
     "build": "node scripts/generate-secrets.mjs --allow-missing && ng build",
     "build:gh-pages": "node scripts/generate-secrets.mjs --allow-missing && ng build --configuration production,gh-pages",
     "watch": "ng build --watch --configuration development",

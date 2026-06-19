@@ -1,20 +1,34 @@
 <form class="search-form mf-rounded">
     <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic">
       <mat-label>Find your next location</mat-label>
-      <input 
-        type="text" 
-        placeholder="Search for a city..." 
-        matInput 
-        [formControl]="searchControl" 
-        [matAutocomplete]="auto">
+      <input
+        type="text"
+        placeholder="Search for a city..."
+        matInput
+        [formControl]="searchControl"
+        [matAutocomplete]="auto"
+        (keydown.enter)="onEnter($event)">
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)" [displayWith]="displayFn">
-        @for(city of filteredCities$ | async; track $index) {
+        @if (isLoadingSuggestions()) {
+          <mat-option disabled class="loading-option">
+            <span class="loading-option__content">
+              <mat-spinner diameter="18"></mat-spinner>
+              Searching cities…
+            </span>
+          </mat-option>
+        } @else if (suggestionError()) {
+          <mat-option disabled class="error-option">{{ suggestionError() }}</mat-option>
+        } @else if (hasActiveQuery() && suggestions().length === 0) {
+          <mat-option disabled>No matching cities</mat-option>
+        } @else {
+          @for (city of suggestions(); track city.lat + ',' + city.lon) {
             <mat-option [value]="city">
-                {{ city.name }}, {{ city.country }}
-                @if(city.state) {
-                    <span>({{ city.state }})</span>
-                }
+              {{ city.name }}, {{ city.country }}
+              @if (city.state) {
+                <span>({{ city.state }})</span>
+              }
             </mat-option>
+          }
         }
       </mat-autocomplete>
     </mat-form-field>

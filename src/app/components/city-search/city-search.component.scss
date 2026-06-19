@@ -55,3 +55,18 @@
 ::ng-deep .search-field .mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing {
   border-color: var(--wp-border-subtle);
 }
+
+.loading-option__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--wp-color-text-muted, rgba(0, 0, 0, 0.6));
+}
+
+.error-option {
+  white-space: normal;
+  line-height: 1.4;
+  height: auto;
+  min-height: 48px;
+  color: var(--wp-color-error, #b3261e);
+}
